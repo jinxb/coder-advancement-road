@@ -5,6 +5,7 @@ const NAME_OR_PASSWORD_IS_INCORRECT = 'name_or_password_is_incorrect'
 const PASSWORD_IS_INCORRECT = 'password_is_incorrect'
 const UN_AUTHORIZATION = 'un_authorization'
 const OPERATION_IS_NOT_AUTHORIZATION = 'operation_is_not_authorization'
+const CAPTCHA_IS_INCORRECT = 'captcha_is_incorrect'
 module.exports = {
   NAME_OR_PASSWORD_IS_REQUIRED,
   NAME_IS_ALREADY_EXISTS,
@@ -12,5 +13,6 @@ module.exports = {
   NAME_OR_PASSWORD_IS_INCORRECT,
   PASSWORD_IS_INCORRECT,
   UN_AUTHORIZATION,
-  OPERATION_IS_NOT_AUTHORIZATION
+  OPERATION_IS_NOT_AUTHORIZATION,
+  CAPTCHA_IS_INCORRECT
 }

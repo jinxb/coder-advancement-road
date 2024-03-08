@@ -1,4 +1,4 @@
-const { NAME_OR_PASSWORD_IS_REQUIRED, NAME_IS_ALREADY_EXISTS, PASSWORD_IS_INCORRECT, USER_DOES_NOT_EXISTS, UN_AUTHORIZATION, OPERATION_IS_NOT_AUTHORIZATION } = require('../config/error')
+const { NAME_OR_PASSWORD_IS_REQUIRED, NAME_IS_ALREADY_EXISTS, PASSWORD_IS_INCORRECT, USER_DOES_NOT_EXISTS, UN_AUTHORIZATION, OPERATION_IS_NOT_AUTHORIZATION, CAPTCHA_IS_INCORRECT } = require('../config/error')
 const app = require('../app')
 
 app.on('error', (error, ctx) => {
@@ -24,6 +24,10 @@ app.on('error', (error, ctx) => {
     case UN_AUTHORIZATION: 
       code = 401
       message = '无效的token！'
+      break
+    case CAPTCHA_IS_INCORRECT: 
+      code = 4004
+      message = '验证码不正确，请重新输入！'
       break
     case OPERATION_IS_NOT_AUTHORIZATION: 
       code = 401

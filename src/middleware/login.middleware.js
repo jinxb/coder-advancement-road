@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken')
 const userService = require('../service/user.service')
 const md5Password = require("../utils/md5-password")
 const { PUBLIC_KEY } = require(path.resolve(__dirname, '../config/secret'))
-const { NAME_OR_PASSWORD_IS_REQUIRED, USER_DOES_NOT_EXISTS, CAPTCHA_IS_INCORRECT, UN_AUTHORIZATION } = require("../config/error")
+const { NAME_OR_PASSWORD_IS_REQUIRED, USER_DOES_NOT_EXISTS, CAPTCHA_IS_INCORRECT, UN_AUTHORIZATION, PASSWORD_IS_INCORRECT } = require("../config/error")
 const redisService = require('../service/redis.service')
+const { generateRedisTokenKey } = require('../utils/redisContent')
 
 
 const verifyLogin = async (ctx, next) => {
@@ -24,13 +25,11 @@ const verifyLogin = async (ctx, next) => {
       ctx.app.emit('error', PASSWORD_IS_INCORRECT, ctx)
       return 
     }
-    console.log(await redisService.get(sid));
     if (await redisService.get(sid) !== captcha.toLowerCase()) {
       ctx.app.emit('error', CAPTCHA_IS_INCORRECT, ctx)
       return 
     }
     ctx.user = user
-    console.log('111');
     await next()
   } catch (error) {
     console.log(error);
@@ -46,6 +45,13 @@ const verifyAuth = async (ctx, next) => {
   const token = authorization.replace('Bearer ', '')
   try {
     const result = jwt.verify(token, PUBLIC_KEY, { algorithms: ['RS256'] })
+    const { id, name } = result
+    const key = generateRedisTokenKey({id, name})
+    if (!await redisService.get(key)) {
+      ctx.app.emit('error', UN_AUTHORIZATION, ctx)
+      return
+    }
+    // 增长时间
     ctx.user = result
     await next()
   } catch (error) {
