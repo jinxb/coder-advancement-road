@@ -6,6 +6,7 @@ const PASSWORD_IS_INCORRECT = 'password_is_incorrect'
 const UN_AUTHORIZATION = 'un_authorization'
 const OPERATION_IS_NOT_AUTHORIZATION = 'operation_is_not_authorization'
 const CAPTCHA_IS_INCORRECT = 'captcha_is_incorrect'
+const REQUIRED_PARAMETER_MISSING = 'required_parameter_missing'
 module.exports = {
   NAME_OR_PASSWORD_IS_REQUIRED,
   NAME_IS_ALREADY_EXISTS,
@@ -14,5 +15,6 @@ module.exports = {
   PASSWORD_IS_INCORRECT,
   UN_AUTHORIZATION,
   OPERATION_IS_NOT_AUTHORIZATION,
-  CAPTCHA_IS_INCORRECT
+  CAPTCHA_IS_INCORRECT,
+  REQUIRED_PARAMETER_MISSING
 }

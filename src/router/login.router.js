@@ -10,6 +10,7 @@ loginRouter.post('/', verifyLogin, sign)
 // 2. 验证码接口
 loginRouter.get('/captcha', captcha)
 
+// 3. 登出
 loginRouter.post('/exit', verifyAuth, logout)
 
 module.exports = loginRouter

@@ -10,6 +10,13 @@ class UserService {
       console.log(error)
     }
   }
+
+  async findUserById(id) {
+    const statement = 'SELECT * FROM user WHERE id = ?'
+    const [res] = await connection.execute(statement, [id])
+    return res
+  }
+
   async findUserByName(name) {
     const statement = `SELECT u.id, u.name, u.password, u.enable, (SELECT JSON_OBJECT('id', p.id, 'userId', p.user_id, 'avatar', p.avatar_url, 'address', p.address, 'gender', p.gender, 'phone', p.phone, 'email', p.email)  FROM profile p WHERE p.user_id = u.id) as profile, JSON_ARRAYAGG(JSON_OBJECT('id', r.id,'name', r.name, 'code', r.code, 'enable', r.enable)) as roles
     FROM user u 
@@ -73,6 +80,31 @@ class UserService {
     } catch (error) {
         console.log(error);
     }
+  }
+
+  async updateUserRole(id, name, roleIds) {
+    await connection.execute('DELETE FROM user_roles_role WHERE userId=?', [id])
+    const roleInserts = roleIds.map(roleId => {
+      return connection.execute(
+        'INSERT INTO `user_roles_role` (`userId`, `roleId`) VALUES (?, ?)',
+        [id, roleId]
+      );
+    });
+    await Promise.all(roleInserts);
+    return 
+  }
+
+  async updateUserPwd(id, password) {
+    console.log(id, password);
+    const statement = `UPDATE user SET password = ? WHERE id = ?`
+    const [res] = await connection.execute(statement, [password, id])
+    return res
+  }
+
+  async deleteUser(id) {
+    const statement = `DELETE FROM user WHERE id=?`
+    const [res] = await connection.execute(statement, [id])
+    return res
   }
 }
 

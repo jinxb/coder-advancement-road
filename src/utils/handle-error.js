@@ -18,7 +18,7 @@ app.on('error', (error, ctx) => {
       message = '用户不存在，请重新输入！'
       break
     case PASSWORD_IS_INCORRECT:
-      code = 404
+      code = 40001
       message = '密码不正确，请重新输入！'
       break
     case UN_AUTHORIZATION: 
@@ -32,6 +32,10 @@ app.on('error', (error, ctx) => {
     case OPERATION_IS_NOT_AUTHORIZATION: 
       code = 401
       message = '无操作该资源的权限！'
+      break
+    case REQUIRED_PARAMETER_MISSING:
+      code = 400
+      message = '缺少必要的请求参数！'
       break
     default:
       code = 500
